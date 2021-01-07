@@ -1,0 +1,28 @@
+{
+  "name": "schema-gh",
+  "version": "0.0.0-development",
+  "author": "soduco",
+  "description": "Elasticsearch mapping extension for geohistorical data",
+  "license": "MIT",
+  "main": "schema.js",
+  "scripts": {
+    "update_index": "./bin/update_index",
+    "lint": "jshint .",
+    "validate": "npm ls"
+  },
+  "dependencies": {
+    "elasticsearch": "^16.0.0",
+    "pelias-config": "^4.5.0",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "precommit-hook": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "pre-commit": [
+    "lint",
+    "validate"
+  ]
+}
