@@ -25,7 +25,7 @@ const indexName = config.schema.indexName;
 // verify that the index already exists
 let req = { index: indexName };
 client.indices.exists(req, (err, res) => {
-  if (err) {
+  if (err) {  
     console.error(err.message || err, '\n');
     process.exit(1);
   }

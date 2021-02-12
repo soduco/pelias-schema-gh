@@ -1,12 +1,12 @@
-const strict_date = require('./partial/strict_date');
+const long = require('./partial/long');
 
 let schema = {
   properties: {
-    valid_time: {
+    validtime: {
       type: 'object',
       properties: {
-        start: strict_date,
-        end: strict_date
+        start: long,
+        end: long
       }
     }
   }
