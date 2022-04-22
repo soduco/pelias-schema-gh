@@ -7,6 +7,7 @@ const SUPPORTED_ES_VERSIONS = '>=7.4.2';
 
 const cli = require('./cli');
 const schema_gh = require('../schema');
+const stored_scripts = require('../stored_scripts');
 
 cli.header('Update index');
 
@@ -44,4 +45,21 @@ client.indices.putMapping(req, (err, res) => {
   }
   console.log('[update mapping]', '\t', indexName, res, '\n');
   process.exit(!!err);
+});
+
+
+// store scripts on the Elasticsearch server
+stored_scripts.forEach(script => {
+  req = {
+    id: script.index,
+    body: script.body
+  }
+  client.putScript(req,  (err, res) => {
+    if (err) {
+      console.error(err.message || err, '\n');
+      process.exit(1);
+    }
+    console.log(`[stored script '${script.index}']`, '\t', res, '\n');
+    process.exit(!!err);
+  });  
 });
