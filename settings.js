@@ -132,16 +132,16 @@ function generate(){
         },
         "peliasStreet": {
           "type": "custom",
-          // GeoHistorical geocoding - alternative tokenizer
+          // GeoHistorical geocoding - alternative tokenizer that splits on apostrophes
           "tokenizer":"ghTokenizer",
           "char_filter" : ["punctuation", "nfkc_normalizer"],
           "filter": [
             "lowercase",
             "trim",
             "remove_duplicate_spaces",
-            //"synonyms/custom_street/multiword",
-            //"street_synonyms_multiplexer",
-            //"icu_folding",
+            "synonyms/custom_street/multiword",
+            "street_synonyms_multiplexer",
+            "icu_folding",
             // GeoHistorical geocoding - remove stop words in French and English
             "remove_stopwords",
             "remove_ordinals",

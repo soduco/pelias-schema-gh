@@ -1,8 +1,11 @@
 // These characters will be removed from ngrams/shingles
 // @see: org/apache/lucene/analysis/cn/smart/stopwords.txt
 
+// Historical Geocoding - do NOT remove apostrophes, we WANT to tokenize on it !
 module.exports.all = [
-  ".","`","‘","-","_","=","?","'","|","\"","(",")","{","}","[","]","<",">","*",
+  ".","`","‘","-","_","=","?",
+  //"'",
+  "|","\"","(",")","{","}","[","]","<",">","*",
   "#","&","^","$","@","!","~",":",";","+","《","》","—","－","，","。",
   "、", "：","；","！","·","？","„","“","”","）","（","【","】","［","］","●"
 ];
