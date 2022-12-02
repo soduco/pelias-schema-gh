@@ -24,6 +24,10 @@ function generate(){
         "peliasTokenizer": {
           "type": "pattern",
           "pattern": "[\\s,/\\\\-]+"
+        },
+        "ghTokenizer": {
+          "type": "pattern",
+          "pattern": "[\'\\s,/\\\\-]+"
         }
       },
       "analyzer": {
@@ -128,20 +132,25 @@ function generate(){
         },
         "peliasStreet": {
           "type": "custom",
-          "tokenizer":"peliasTokenizer",
+          // GeoHistorical geocoding - alternative tokenizer
+          "tokenizer":"ghTokenizer",
           "char_filter" : ["punctuation", "nfkc_normalizer"],
           "filter": [
             "lowercase",
             "trim",
             "remove_duplicate_spaces",
-            "synonyms/custom_street/multiword",
-            "street_synonyms_multiplexer",
-            "icu_folding",
+            //"synonyms/custom_street/multiword",
+            //"street_synonyms_multiplexer",
+            //"icu_folding",
+            // GeoHistorical geocoding - remove stop words in French and English
+            "remove_stopwords",
             "remove_ordinals",
             "trim",
             "unique_only_same_position",
             "notnull",
             "flatten_graph",
+            "geohistorical_ngram_filter",
+            "unique"
           ]
         },
         "peliasIndexCountryAbbreviation": {
@@ -183,7 +192,8 @@ function generate(){
             "synonyms/personal_titles",
             "synonyms/streets",
             "synonyms/directionals",
-            "synonyms/british_american_english",
+            // GeoHistorical geocoding - non-french synonyms are removed
+            //"synonyms/british_american_english",
           ]
         },
         "name_synonyms_multiplexer": {
@@ -198,7 +208,8 @@ function generate(){
             "synonyms/streets",
             "synonyms/directionals",
             "synonyms/punctuation",
-            "synonyms/british_american_english"
+            // GeoHistorical geocoding - non-french synonyms are removed
+            //"synonyms/british_american_english"
           ]
         },
         "admin_synonyms_multiplexer": {
@@ -225,6 +236,9 @@ function generate(){
           "type": "unique",
           "only_on_same_position": "true"
         },
+        "unique": {
+          "type": "unique"
+        },
         "peliasOneEdgeGramFilter": {
           "type" : "edgeNGram",
           "min_gram" : 1,
@@ -245,7 +259,25 @@ function generate(){
           "pattern": " +",
           "replacement": " "
         },
-        // more generated below
+        "geohistorical_ngram_subfilter": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 30
+        },
+        // GeoHistorical geocoding - generate ngrams for street names to enable searching partial street.
+        // Create ngrams only for word tokens, not synonyms
+        "geohistorical_ngram_filter": {
+          "type": "condition",
+          "filter": [ "geohistorical_ngram_subfilter"],
+          "script": {
+            "source": "token.type == 'word'"
+          }
+        },
+        "remove_stopwords": {
+	  "type": "stop",
+	  "ignore_case": true,
+	  "stopwords": [ "_french_", "_english_"]
+	}
       },
       "char_filter": {
         "punctuation" : {

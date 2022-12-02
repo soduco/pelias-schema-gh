@@ -5,6 +5,7 @@ const SUPPORTED_ES_VERSIONS = '>=7.4.2';
 
 const cli = require('./cli');
 const schema = require('../schema');
+const stored_scripts = require('../stored_scripts');
 
 cli.header("create index");
 
@@ -40,4 +41,20 @@ client.indices.create(req, (err, res) => {
   }
   console.log('[put mapping]', '\t', indexName, res, '\n');
   process.exit(!!err);
+});
+
+// GeoHistorical geocoding - store scripts on ES
+stored_scripts.forEach(script => {
+  const req = {
+    id: script.index,
+    body: script.body
+  }
+  client.putScript(req,  (err, res) => {
+    if (err) {
+      console.error(err.message || err, '\n');
+      process.exit(1);
+    }
+    console.log(`[stored script '${script.index}']`, '\t', res, '\n');
+    process.exit(!!err);
+  });  
 });

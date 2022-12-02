@@ -253,7 +253,9 @@ module.exports.tests.peliasStreetAnalyzer = function(test, common) {
       "trim",
       "unique_only_same_position",
       "notnull",
-      "flatten_graph"
+      "flatten_graph",
+      "geohistorical_ngram_filter"  // geohistorical + Paris : add ngram expander for street names
+
     ]);
     t.end();
   });
@@ -362,7 +364,8 @@ module.exports.tests.nameSynonymsMultiplexerFilter = function (test, common) {
       'synonyms/streets',
       'synonyms/directionals',
       'synonyms/punctuation',
-      'synonyms/british_american_english'
+      // 'synonyms/british_american_english' // geohistorical + Paris : there is no en synonyms anymore
+
     ]);
     t.end();
   });
@@ -381,7 +384,7 @@ module.exports.tests.streetSynonymsMultiplexerFilter = function (test, common) {
       'synonyms/personal_titles',
       'synonyms/streets',
       'synonyms/directionals',
-      'synonyms/british_american_english'
+      //'synonyms/british_american_english' // geohistorical + Paris : there is no en synonyms anymore
     ]);
     t.end();
   });
@@ -519,7 +522,8 @@ module.exports.tests.streetSynonymFilter = function(test, common) {
     var filter = s.analysis.filter['synonyms/streets'];
     t.equal(filter.type, 'synonym');
     t.true(Array.isArray(filter.synonyms));
-    t.equal(filter.synonyms.length, 809);
+    // t.equal(filter.synonyms.length, 809); // geohistorical + Paris : there is no de/en/es synonyms anymore
+    t.equal(filter.synonyms.length, 129); // replacement value
     t.end();
   });
 };
@@ -533,7 +537,8 @@ module.exports.tests.directionalSynonymFilter = function(test, common) {
     var filter = s.analysis.filter['synonyms/directionals'];
     t.equal(filter.type, 'synonym');
     t.true(Array.isArray(filter.synonyms));
-    t.equal(filter.synonyms.length, 69);
+    // t.equal(filter.synonyms.length, 69); // geohistorical + Paris : there is no en synonyms anymore
+    t.equal(filter.synonyms.length, 6);
     t.end();
   });
 };
@@ -547,7 +552,8 @@ module.exports.tests.personalTitleSynonymFilter = function (test, common) {
     var filter = s.analysis.filter['synonyms/personal_titles'];
     t.equal(filter.type, 'synonym');
     t.true(Array.isArray(filter.synonyms));
-    t.equal(filter.synonyms.length, 191);
+    //t.equal(filter.synonyms.length, 191);  // geohistorical + Paris : there is no de/en/es synonyms anymore
+    t.equal(filter.synonyms.length, 39);  // geohistorical + Paris : replacement value
     t.end();
   });
 };
@@ -561,7 +567,8 @@ module.exports.tests.placeNameSynonymFilter = function (test, common) {
     var filter = s.analysis.filter['synonyms/place_names'];
     t.equal(filter.type, 'synonym');
     t.true(Array.isArray(filter.synonyms));
-    t.equal(filter.synonyms.length, 314);
+    // t.equal(filter.synonyms.length, 314); // geohistorical + Paris : there is no de/en/es synonyms anymore
+    t.equal(filter.synonyms.length, 76); // geohistorical + Paris : replacement value
     t.end();
   });
 };

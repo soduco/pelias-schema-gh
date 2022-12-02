@@ -23,3 +23,9 @@
 #   foo => foo bar, baz
 #
 # =============================================================================
+
+rue, r
+saint, s, st
+sainte, s, ste
+saints, ss, sts
+neuve, ne, nve, n

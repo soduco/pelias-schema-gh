@@ -5,6 +5,7 @@ const hash = require('./partial/hash');
 const multiplier = require('./partial/multiplier');
 const keyword = require('./partial/keyword');
 const keyword_with_doc_values = require('./partial/keyword_with_doc_values');
+const long = require('./partial/long');
 
 var schema = {
   properties: {
@@ -172,7 +173,16 @@ var schema = {
     popularity: multiplier,
 
     // addendum (non-indexed supplimentary data)
-    addendum: hash
+    addendum: hash,
+    
+    // GeoHistorical geocoder - Encoding of the valid time
+    validtime: {
+        type: 'object',
+        properties: {
+	    start: long,
+	    end: long
+        }
+    }
   },
   dynamic_templates: [{
     nameGram: {
