@@ -3,7 +3,7 @@ module.exports = {
     body: {
         script : {
             lang: 'painless',
-            source: require('./sources/temporal_distance')
+            source: require('./sources/temporal_distance.painless')
         }
     }
 };
